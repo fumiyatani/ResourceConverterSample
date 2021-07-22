@@ -1,2 +1,6 @@
-package com.example.resourceconvertersample.login.model 
+package com.example.resourceconvertersample.login.data
 
+enum class UseType {
+    GUEST,
+    REGISTERED
+}
