@@ -1,3 +1,9 @@
 <resources>
+    <!-- アプリ名 -->
     <string name="app_name">ResourceConverterSample</string>
+
+    <!-- ログイン画面のリソース -->
+    <string name="title_login">ログイン画面</string>
+    <string name="label_hint_user_mail">ユーザーメールを入力してください。</string>
+    <string name="label_hint_user_password">パスワードを入力してください。</string>
 </resources>

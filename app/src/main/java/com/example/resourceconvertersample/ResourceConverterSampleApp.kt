@@ -1,3 +1,7 @@
 package com.example.resourceconvertersample
-class ResourceConverterSampleApp {
-}
+
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
+
+@HiltAndroidApp
+class ResourceConverterSampleApp : Application()
