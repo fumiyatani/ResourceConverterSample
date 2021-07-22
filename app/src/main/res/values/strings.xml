@@ -6,4 +6,6 @@
     <string name="title_login">ログイン画面</string>
     <string name="label_hint_user_mail">ユーザーメールを入力してください。</string>
     <string name="label_hint_user_password">パスワードを入力してください。</string>
+    <string name="label_login">ログイン</string>
+    <string name="label_register">新規登録</string>
 </resources>
