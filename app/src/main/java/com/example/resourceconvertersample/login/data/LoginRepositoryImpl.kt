@@ -1,11 +1,8 @@
 package com.example.resourceconvertersample.login.data
 
 import com.example.resourceconvertersample.login.model.*
-import kotlinx.coroutines.sync.Mutex
 
 class LoginRepositoryImpl : LoginRepository {
-    private val transactionCoroutine: Mutex = Mutex()
-
     private val users: MutableMap<String, String> = mutableMapOf()
 
     override suspend fun register(mail: String, password: String): Result<Unit> {
