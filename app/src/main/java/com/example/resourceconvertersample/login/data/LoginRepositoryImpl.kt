@@ -1,8 +1,9 @@
 package com.example.resourceconvertersample.login.data
 
 import com.example.resourceconvertersample.login.model.*
+import javax.inject.Inject
 
-class LoginRepositoryImpl : LoginRepository {
+class LoginRepositoryImpl @Inject constructor() : LoginRepository {
     private val users: MutableMap<String, String> = mutableMapOf()
 
     override suspend fun register(mail: String, password: String): Result<Unit> {
