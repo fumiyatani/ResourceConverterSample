@@ -3,9 +3,7 @@ package com.example.resourceconvertersample.login.app.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.resourceconvertersample.login.model.Failure
-import com.example.resourceconvertersample.login.model.LoginUseCase
-import com.example.resourceconvertersample.login.model.Success
+import com.example.resourceconvertersample.login.model.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -36,7 +34,13 @@ class LoginViewModel @Inject constructor(
                     _messageFlow.emit(Message.Succeeded)
                 }
                 is Failure -> {
-                    _messageFlow.emit(Message.Failed(result))
+                    when (result.reason) {
+                        // todo 一旦同一のエラーとする。
+                        is EmptyMailError -> _messageFlow.emit(Message.Failed(result))
+                        is EmptyPasswordError -> _messageFlow.emit(Message.Failed(result))
+                        is SameMailError -> _messageFlow.emit(Message.Failed(result))
+                        is SameUserError -> _messageFlow.emit(Message.Failed(result))
+                    }
                 }
             }
         }
@@ -60,6 +64,6 @@ class LoginViewModel @Inject constructor(
 
     sealed class Message {
         object Succeeded : Message()
-        class Failed(reason: Failure) : Message()
+        class Failed(val reason: Failure) : Message()
     }
 }
