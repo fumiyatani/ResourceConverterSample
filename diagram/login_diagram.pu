@@ -1,0 +1,101 @@
+@startuml login_practice_diagram
+
+package app {
+    class LoginFragment {
+        -LoginViewModel viewModel
+        -FragmentLoginBindign binding
+
+        +View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        -void onMessage(Message message)
+        -void notifySucceeded(Message message)
+        -void notifyFailed(Message message)
+    }
+
+    class LoginViewModel {
+        +MutableLiveData<String> userMail
+        +MutableLiveData<String> userPassword
+
+        +void login(String mail, String password)
+        +void register(String mail, String password)
+    }
+    class Message
+    class Succeeded 
+    class Failed {
+        Failure reason
+    }
+}
+
+package domain {
+    class LoginUseCase {
+        -Mutex transactionCoroutine
+
+        +suspend Result<Unit> login(String mail, String password)
+        +suspend Result<Unit> register(String mail, String password)
+    }
+
+    interface LoginRepository {
+        +suspend Result<Unit> login(String mail, String password)
+        +suspend Result<Unit> register(String mail, String password)
+    }
+
+    class Result<T>
+    class Success {
+        +T result
+    }
+    class Failure {
+        +FailureReson reason 
+    }
+    class FailureReson {
+        +String message
+    }
+    class EmptyMailError {
+        +String message
+    }
+    class EmptyPasswordError {
+        +String message
+    }
+    class SameMailError {
+        +String message
+    }
+    class SameUserError {
+        +String message
+    }
+}
+
+package data {
+    class LoginRepositoryImpl {
+        -MutableMap<String, String> users
+
+        +suspend Result<Unit> login(String mail, String password)
+        +suspend Result<Unit> register(String mail, String password)
+    }
+}
+
+LoginFragment ..|> LoginViewModel
+    LoginViewModel ..|> LoginUseCase
+        LoginUseCase ..|> LoginRepository
+        LoginRepositoryImpl --|> LoginRepository
+
+
+Result <|-- Success :extends
+Result <|-- Failure : extends
+
+
+FailureReson <|-- EmptyMailError
+FailureReson <|-- EmptyPasswordError
+FailureReson <|-- SameMailError
+FailureReson <|-- SameUserError
+
+Failure --o FailureReson
+
+LoginViewModel --|> Result :use
+    LoginUseCase --|> Result :return
+        LoginRepositoryImpl --|> Result :return
+
+Message <|-- Succeeded : extends
+Message <|-- Failed : extends
+
+LoginFragment --|> Message :use
+    LoginViewModel --|> Message :return
+
+@enduml
